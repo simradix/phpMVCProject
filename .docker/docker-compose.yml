@@ -1,0 +1,43 @@
+version: '3'
+services:
+    nginx:
+        build: ./nginx
+        ports:
+            - "80:80"
+        volumes: 
+            - ../:/var/www/app
+            - ./nginx/conf.d/nginx.conf:/etc/nginx/conf.d/nginx.conf
+        depends_on:
+            - php
+
+    php:
+        build: ./php
+        working_dir: /var/www/app
+        volumes:
+            - ../:/var/www/app
+            - ../config/php.ini:/usr/local/etc/php/php.ini
+        depends_on: 
+            mysql:
+                condition: service_healthy
+
+    composer:
+        image: composer
+        command: ["composer", "install"]
+        volumes: 
+            - ../:/app
+
+    mysql:
+        image: mysql:8
+        environment: 
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: demo
+        volumes:
+            - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+            - mysqldata:/var/lib/mysql
+        healthcheck:
+            test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
+            interval: 5s
+            retries: 10
+
+volumes: 
+    mysqldata:
