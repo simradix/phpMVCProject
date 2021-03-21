@@ -6,8 +6,8 @@ class Request
     public function getPath()
     {
         $path = $_SERVER['REQUEST_URI'] ?? '/';
-        $queryParamPos = strpos($path, '?');
-        if ($queryParamPos === false) {
+        $hasQueryParam = strpos($path, '?');
+        if (!$hasQueryParam) {
             return $path;
         }
         return substr($path, 0, $queryParamPos);
