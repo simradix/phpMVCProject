@@ -19,6 +19,7 @@ class Application
     /** @var \app\core\Response $response Response instance */
     public $response;
 
+    /** @var \app\core\Application $app Static reference to the Application class */
     public static \app\core\Application $app;
 
 

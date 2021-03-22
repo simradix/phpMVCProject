@@ -89,7 +89,7 @@ class Router
         if (!$callback) {
             // Application::$app->response->setStatusCode(404);
             $this->response->setStatusCode(404);
-            return $this->render("404");
+            return $this->render("_404");
         }
 
         // If the req handler is not a function, it means
@@ -116,10 +116,10 @@ class Router
      * @param String $view View filename
      * @return string
      **/
-    public function render(String $view): String
+    public function render(String $view, Array $params = []): String
     {
-        $layout = $this->layoutContent();
-        $view = $this->getViewFile($view);
+        $layout = $this->getLayout();
+        $view = $this->getView($view, $params);
         
         return preg_replace("/{{\scontent\s}}/i", $view, $layout);
     }
@@ -130,7 +130,7 @@ class Router
      *
      * @return string
      **/
-    protected function layoutContent(): String
+    protected function getLayout(): String
     {
         // catche output-buffer and return it.
         ob_start();
@@ -145,8 +145,18 @@ class Router
      * @param String $view view filename
      * @return string
      **/
-    protected function getViewFile(String $view): String
+    protected function getView(String $view, Array $params = []): String
     {
+        // iterate trough map and declare the key as a var
+        // and assign its value to it. 
+        // 'name'=>'value' --> $name = 'value';
+        foreach ($params as $key => $value) {
+            $$key = $value;
+        }
+        
+        // Every var in this functions scope its gonna be catched by
+        // the include_onece and be directly available inside the included
+        // scope.
         // catch output-buffer and return it
         ob_start();
         include_once Application::$ROOT_DIR . "/view/$view.php";
