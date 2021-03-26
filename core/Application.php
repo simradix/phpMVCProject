@@ -19,10 +19,11 @@ class Application
     /** @var \app\core\Response $response Response instance */
     public $response;
 
-    /** @var \app\core\Application $app Static reference to the Application class */
+    /** @var \app\core\Application $app Static reference to the Application class instance*/
     public static \app\core\Application $app;
 
-
+    /** @var \app\core\Controller $controller Controller instance */
+    public Controller $controller;
 
     /**
      * Application contructor
@@ -56,6 +57,26 @@ class Application
     public function run (): void 
     {
         echo $this->router->resolve();
+    }
+
+
+
+    /**
+     * @return \app\core\Controller
+     */
+    public function getController(): \app\core\Controller
+    {
+        return $this->controller;
+    }
+
+
+
+    /**
+     * @param \app\core\Controller $controller
+     */
+    public function setController(Controller $controller): void
+    {
+        $this->controller = $controller;
     }
 }
 

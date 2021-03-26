@@ -2,29 +2,31 @@
 namespace app\controllers;
 
 use app\core\Application;
+use app\core\Controller;
+use app\core\Request;
 
 /**
  * SiteControllers class
  * 
  * @package app\controllers
  */
-class SiteController
+class SiteController extends Controller
 {
     public function home() 
     {
         $params = [
             "name" => "PHPMVC"
         ];
-        return Application::$app->router->render('home', $params);
+        return $this->render('home', $params);
     }
  
     public function contact() 
     {
-        return Application::$app->router->render('contact');
+        return $this->render('contact');
     }
     
-    public function handleContact() 
+    public function handleContact(Request $request) 
     {
-        return "Handling submitted contact data.";
+        $body = $request->getBody();
     }
 }

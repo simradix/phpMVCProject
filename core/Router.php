@@ -83,7 +83,7 @@ class Router
         // get the apropriate callback registrated in
         // $this->routes.
         $path = $this->request->getPath();  // return client req URI
-        $method = $this->request->getMethod(); // return client req HTTP METHOD
+        $method = $this->request->method(); // return client req HTTP METHOD
         $callback = $this->routes[$method][$path] ?? false; // If exist return callback
         
         if (!$callback) {
@@ -100,9 +100,16 @@ class Router
             return $this->render($callback);
         }
 
+        if (is_array($callback)) {
+            // Instantiate the current controller in use
+            // inside Application::$app $controller prop
+            Application::$app->setController(new $callback[0]);
+            $callback[0] = Application::$app->getController();
+        }
+
         // If there is a callback for the client req in the routes prop
         // here it is executed.
-        return call_user_func($callback);
+        return call_user_func($callback, $this->request);
     }
 
 
@@ -132,9 +139,11 @@ class Router
      **/
     protected function getLayout(): String
     {
+        $layout = Application::$app->controller->getLayoutName();
+        
         // catche output-buffer and return it.
         ob_start();
-        include_once Application::$ROOT_DIR . "/view/layouts/main.php";
+        include_once Application::$ROOT_DIR . "/view/layouts/$layout.php";
         return ob_get_clean();
     }
 
