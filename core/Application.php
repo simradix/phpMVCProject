@@ -19,6 +19,9 @@ class Application
     /** @var \app\core\Response $response Response instance */
     public $response;
 
+    /** @var \app\core\Database $db Database instance */
+    public Database $db;
+
     /** @var \app\core\Application $app Static reference to the Application class instance*/
     public static \app\core\Application $app;
 
@@ -42,6 +45,8 @@ class Application
         $this->request = new \app\core\Request();
         $this->response = new \app\core\Response();
         $this->router = new \app\core\Router($this->request, $this->response);
+
+        $this->db = new \app\core\Database();
     }
 
 
