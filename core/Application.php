@@ -38,7 +38,7 @@ class Application
      *
      * @param String $rootPath top-most dirname
      **/
-    public function __construct(String $rootPath)
+    public function __construct(String $rootPath, array $config)
     {
         self::$ROOT_DIR = $rootPath;
         self::$app = $this;
@@ -46,7 +46,7 @@ class Application
         $this->response = new \app\core\Response();
         $this->router = new \app\core\Router($this->request, $this->response);
 
-        $this->db = new \app\core\Database();
+        $this->db = new \app\core\Database($config['db']);
     }
 
 

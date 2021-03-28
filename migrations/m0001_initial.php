@@ -13,7 +13,8 @@ class m0001_initial
      **/
     public function up()
     {
-        echo "Applying migrations";
+        $db = \app\core\Application::$app->db;
+        $db->pdo->exec();
     }
 
     /**
@@ -27,6 +28,7 @@ class m0001_initial
      **/
     public function down()
     {
-        echo "down migrations";
+        $className = self::class;
+        echo "$className - "."down migrations" . PHP_EOL;
     }
 }

@@ -13,7 +13,8 @@ class m0002_something
      **/
     public function up()
     {
-        echo "Applying migrations";
+        $className = self::class;
+        echo "$className - "."Applying migrations" . PHP_EOL;
     }
 
     /**
@@ -27,6 +28,7 @@ class m0002_something
      **/
     public function down()
     {
-        echo "down migrations";
+        $className = self::class;
+        echo "$className - "."down migrations" . PHP_EOL;
     }
 }
