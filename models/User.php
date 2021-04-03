@@ -1,9 +1,9 @@
 <?php
 namespace app\models;
 
-use app\core\Model;
+use app\core\DbModel;
 
-class RegisterModel extends Model
+class User extends DbModel
 {
     public string $firstname = '';
     public string $lastname = '';
@@ -11,9 +11,15 @@ class RegisterModel extends Model
     public string $password = '';
     public string $passwordConfirm = '';
 
-    public function register()
+    public function tableName(): string 
     {
-        return "register";
+        return 'users';
+    }
+
+    public function save()
+    {
+        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        parent::save();
     }
 
     public function rules(): array
@@ -25,5 +31,10 @@ class RegisterModel extends Model
             'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min'=>8], [self::RULE_MAX, 'max'=>24]],
             'passwordConfirm' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match'=>'password']]
         ];
+    }
+
+    public function attributes(): array
+    {
+        return ['firstname', 'lastname', 'email', 'password'];
     }
 }

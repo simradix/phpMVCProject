@@ -1,6 +1,6 @@
 <?php
 
-class m0002_something 
+class m0002_add_password_column
 {
     /**
      * undocumented function summary
@@ -14,7 +14,12 @@ class m0002_something
     public function up()
     {
         $className = self::class;
-        echo "$className - "."Applying migrations" . PHP_EOL;
+        echo "$className - "."up migrations" . PHP_EOL;
+        
+
+        $db = \app\core\Application::$app->db;
+        $SQL = "ALTER TABLE users ADD COLUMN password VARCHAR(512) NOT NULL;";
+        $db->pdo->exec($SQL);
     }
 
     /**
@@ -30,5 +35,9 @@ class m0002_something
     {
         $className = self::class;
         echo "$className - "."down migrations" . PHP_EOL;
+
+        $db = \app\core\Application::$app->db;
+        $SQL = "ALTER TABLE users DROP COLUMN password;";
+        $db->pdo->exec($SQL);
     }
 }
